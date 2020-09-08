@@ -27,9 +27,5 @@ extern void * memmove(void *,const void *,size_t);
 extern void * memscan(void *,int,size_t);
 extern int memcmp(const void *,const void *,size_t);
 
-static inline size_t strnlen(const char *s,size_t max)
-{
-	size_t sz = strlen(s);
-	return sz > max ? max : sz;
-}
+extern size_t strnlen(const char *s,size_t max);
 #endif /* _LINUX_STRING_H_ */

@@ -42,7 +42,7 @@
 #undef VERBOSE_DEBUG
 
 typedef int FILE;
-#include "linux/ext2_fs.h"
+#include "ext2_fs.h"
 #include "ext2fs/ext2fs.h"
 
 static int ext2_open(	struct boot_file_t*	file,

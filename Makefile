@@ -34,11 +34,17 @@ OBJCOPY		:= $(CROSS)objcopy
 
 # The flags for the yaboot binary.
 #
-YBCFLAGS = -Os -m32 $(CFLAGS) -nostdinc -Wall -isystem `$(CC) -m32 -print-file-name=include` -fsigned-char
+YBCFLAGS = -Os -m32 $(CFLAGS) -nostdinc -Wall -isystem `$(CC) -m32 -print-file-name=include` -fsigned-char -ffunction-sections
+YBCFLAGS += -I e2fsprogs/lib/
+YBCFLAGS += -I e2fsprogs/lib/ext2fs/
+YBCFLAGS += -I e2fsprogs/build/lib/
+YBCFLAGS += -DNO_INLINE_FUNCS
 YBCFLAGS += -DVERSION="\"${VERSION}${VERSIONEXTRA}\""
 YBCFLAGS += -DTEXTADDR=$(TEXTADDR) -DDEBUG=$(DEBUG)
 YBCFLAGS += -DMALLOCADDR=$(MALLOCADDR) -DMALLOCSIZE=$(MALLOCSIZE)
 YBCFLAGS += -DKERNELADDR=$(KERNELADDR)
+YBCFLAGS += -Ddev_t=uint32_t
+YBCFLAGS += -Dtime_t=uint64_t
 YBCFLAGS += -Werror -fdiagnostics-show-option
 YBCFLAGS += -I ./include
 YBCFLAGS += -fno-strict-aliasing
@@ -65,11 +71,11 @@ endif
 
 # Link flags
 #
-LFLAGS = -Ttext $(TEXTADDR) -Bstatic -melf32ppclinux
+LFLAGS = -Ttext $(TEXTADDR) -Bstatic -melf32ppclinux --gc-sections
 
 # Libraries
 #
-LLIBS = -lext2fs
+LLIBS = e2fsprogs/build/lib/libext2fs.a
 
 # For compiling userland utils
 #
@@ -85,8 +91,11 @@ HOSTCFLAGS = -O2 $(CFLAGS) -Wall -I/usr/include
 
 OBJS = second/crt0.o second/yaboot.o second/cache.o second/prom.o second/file.o \
 	second/partition.o second/fs.o second/cfg.o second/setjmp.o second/cmdline.o \
-	second/fs_of.o second/fs_ext2.o second/fs_iso.o second/fs_swap.o \
+	second/errno_location.o second/fs_of.o second/fs_ext2.o second/fs_iso.o second/fs_swap.o \
 	second/iso_util.o \
+	second/calloc.o \
+	second/strnlen.o \
+	second/stubs.o \
 	lib/nonstd.o \
 	lib/nosys.o lib/string.o lib/strtol.o lib/vsprintf.o lib/ctype.o lib/malloc.o lib/strstr.o
 

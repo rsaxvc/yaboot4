@@ -126,8 +126,8 @@ struct offset_v2 {
 } __attribute__ ((__packed__));
 
 #ifndef __LITTLE_ENDIAN
-inline __u16 offset_v2_k_type( struct offset_v2 *v2 );
-inline loff_t offset_v2_k_offset( struct offset_v2 *v2 );
+__u16 offset_v2_k_type( struct offset_v2 *v2 );
+loff_t offset_v2_k_offset( struct offset_v2 *v2 );
 #else
 # define offset_v2_k_type(v2)           ((v2)->k_type)
 # define offset_v2_k_offset(v2)         ((v2)->k_offset)
