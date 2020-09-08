@@ -2,7 +2,7 @@
 
 include Config
 
-VERSION = 1.3.17
+VERSION = 1.4.00
 # Debug mode (spam/verbose)
 DEBUG = 0
 # make install vars
@@ -75,7 +75,7 @@ LFLAGS = -Ttext $(TEXTADDR) -Bstatic -melf32ppclinux --gc-sections
 
 # Libraries
 #
-LLIBS = e2fsprogs/build/lib/libext2fs.a
+E2FSLIB = e2fsprogs/build/lib/libext2fs.a
 
 # For compiling userland utils
 #
@@ -116,8 +116,8 @@ lgcc = `$(CC) -m32 -print-libgcc-file-name`
 
 all: yaboot addnote mkofboot
 
-yaboot: $(OBJS)
-	$(LD) $(LFLAGS) $(OBJS) $(LLIBS) $(lgcc) -o second/$@
+yaboot: $(OBJS) $(E2FSLIB)
+	$(LD) $(LFLAGS) $(OBJS) $(E2FSLIB) $(lgcc) -o second/$@
 	chmod -x second/yaboot
 
 addnote:
@@ -133,11 +133,23 @@ mkofboot:
 		false; 									\
 	fi
 
-%.o: %.c
+%.o: %.c $(E2FSLIB)
 	$(CC) $(YBCFLAGS) -c -o $@ $<
 
-%.o: %.S
+%.o: %.S $(E2FSLIB)
 	$(CC) $(YBCFLAGS) -D__ASSEMBLY__  -c -o $@ $<
+
+e2fsprogs:
+	git submodule update --init e2fsprogs
+
+e2fsprogs/build: e2fsprogs
+	mkdir e2fsprogs/build
+
+e2fsprogs/build/Makefile: e2fsprogs/build
+	cd e2fsprogs/build;../configure --disable-mmp --disable-defrag --disable-bmap-stats
+
+e2fsprogs/build/lib/libext2fs.a: e2fsprogs/build/Makefile
+	cd e2fsprogs/build;make
 
 dep:
 	makedepend -Iinclude *.c lib/*.c util/*.c gui/*.c
