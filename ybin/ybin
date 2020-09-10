@@ -77,6 +77,8 @@ if (cat /proc/cpuinfo 2> /dev/null | grep ^platform | grep -q 'pSeries') ; then
     fstype=raw
 elif (cat /proc/cpuinfo 2> /dev/null | grep ^platform | grep -q 'PowerNV') ; then
     fstype=raw
+elif (cat /proc/cpuinfo 2> /dev/null | grep ^platform | grep -q 'Maple') ; then
+    fstype=raw
 else
     fstype=hfs
 fi
@@ -514,6 +516,8 @@ checkconf()
 	## IBM hardware does not need nvram update AFAICT
 	nonvram=1
 	ADDNOTE=yes
+    elif (cat /proc/cpuinfo 2> /dev/null | grep ^platform | grep -q 'Maple') ; then
+	true
     else
 	#echo 1>&2 "$PRG: Warning: Unknown archetecture, $boot may not be bootable on this machine"
 	[ "$nonvram" = 0 ] && echo 1>&2 "$PRG: Warning: Unknown architecture, nvram will not be updated"
@@ -1157,6 +1161,20 @@ raw_install()
 	return 1
     fi
     sync ; sync
+
+    ## update the boot-device variable in OF nvram.
+    if [ "$nonvram" = 0 ] ; then
+	chrp_ofboot=${ofboot%%:*}
+	[ "$VERBOSE" = 1 ] && echo "$PRG: Updating OpenFirmware boot-device variable in nvram..."
+	[ "$DEBUG" = 1 ] && echo 1>&2 "$PRG: DEBUG: boot-device=${chrp_ofboot}"
+	nvsetenv boot-device "${chrp_ofboot}"
+	if [ $? != 0 ] ; then
+	    echo 1>&2 "$PRG: An error occured while updating nvram, we'll ignore it"
+	fi
+    else
+	echo 1>&2 "$PRG: Warning: You must manually configure OpenFirmware to boot."
+    fi
+
     [ "$VERBOSE" = 1 ] && echo "$PRG: Installation successful"
     return 0
 }
