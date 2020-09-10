@@ -1647,6 +1647,12 @@ if [ "$boot" = unconfigured ] ; then
     exit 1
 fi
 
+## also accept quoted symlink names
+for v in boot bsd macos macosx darwin ; do
+    eval $v="\`echo \$$v | tr -d '\"'\`"
+    eval [ -h \"\$$v\" ] \&\& $v="\`readlink -f \$$v\`"
+done
+
 ## if there is still no config file use the automatic generation to make a
 ## generic yaboot.conf. do this before the confcheck to avoid wierd errors.
 if [ "$bootconf" = /dev/null ] ; then
