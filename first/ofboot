@@ -336,7 +336,7 @@ $FGCOLOR to foreground-color
 $BGCOLOR to background-color
 \" \"(0C)\" .printf
 
-\" First Stage GNU/Linux Bootstrap\"(0d 0a)\" .printf
+\" First Stage Debian GNU/Linux Bootstrap\"(0d 0a)\" .printf
 \"  \"(0d 0a)\" .printf
 $MENUOPTS
 \"  \"(0d 0a)\" .printf
