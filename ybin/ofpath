@@ -906,6 +906,8 @@ elif (cat /proc/cpuinfo 2> /dev/null | grep ^platform | grep -q 'Maple') ; then
     SUBARCH=Maple
 elif (cat /proc/cpuinfo 2>/dev/null | grep ^machine | grep -q 'CHRP Pegasos') ; then
     SUBARCH=Pegasos
+elif (cat /proc/cpuinfo 2>/dev/null | grep ^platform | grep -q 'Cell') ; then
+    SUBARCH=Cell
 else
     echo 1>&2 "$PRG: This machine is not yet supported"
     exit 1
@@ -929,7 +931,7 @@ PARTITION="${DEVICE##*[a-z]}"
 ## use appropriate search for right sub arch.
 case "$SUBARCH" in
     # Pegasos OF seems to be NewWorld-ish enough to cope with this.
-    NewWorld|Pegasos)
+    NewWorld|Pegasos|Cell)
 	newworld || exit 1
 	;;
     OldWorld)

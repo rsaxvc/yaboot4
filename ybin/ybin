@@ -79,6 +79,8 @@ elif (cat /proc/cpuinfo 2> /dev/null | grep ^platform | grep -q 'PowerNV') ; the
     fstype=raw
 elif (cat /proc/cpuinfo 2> /dev/null | grep ^platform | grep -q 'Maple') ; then
     fstype=raw
+elif (cat /proc/cpuinfo 2> /dev/null | grep ^platform | grep -q 'Cell') ; then
+    fstype=raw
 else
     fstype=hfs
 fi
@@ -518,6 +520,8 @@ checkconf()
 	ADDNOTE=yes
     elif (cat /proc/cpuinfo 2> /dev/null | grep ^platform | grep -q 'Maple') ; then
 	true
+    elif (cat /proc/cpuinfo 2> /dev/null | grep ^platform | grep -q 'Cell') ; then
+	nonvram=1
     else
 	#echo 1>&2 "$PRG: Warning: Unknown archetecture, $boot may not be bootable on this machine"
 	[ "$nonvram" = 0 ] && echo 1>&2 "$PRG: Warning: Unknown architecture, nvram will not be updated"
