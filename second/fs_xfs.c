@@ -661,8 +661,6 @@ xfs_read_data (char *buf, int len)
 
 	startpos = xfs_file->pos;
 	endpos = xfs_file->pos + len;
-	if (endpos > xfs_file->len)
-		endpos = xfs_file->len;
 	endofprev = (xfs_fileoff_t)-1;
 	init_extents ();
 	while (len > 0 && (xad = next_extent ())) {
