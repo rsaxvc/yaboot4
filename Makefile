@@ -34,7 +34,7 @@ OBJCOPY		:= $(CROSS)objcopy
 
 # The flags for the yaboot binary.
 #
-YBCFLAGS = -Os -m32 $(CFLAGS) -nostdinc -Wall -isystem `$(CC) -m32 -print-file-name=include` -fsigned-char -ffunction-sections
+YBCFLAGS = -Os -m32 $(CFLAGS) -nostdinc -Wall -isystem `$(CC) -m32 -print-file-name=include` -fsigned-char -ffunction-sections -fdata-sections
 YBCFLAGS += -I e2fsprogs/lib/
 YBCFLAGS += -I e2fsprogs/lib/ext2fs/
 YBCFLAGS += -I e2fsprogs/build/lib/
