@@ -137,7 +137,7 @@ mkofboot:
 	fi
 
 #We need some headers built during the e2fsprogs build process.
-#Depend on the e2fsprogs Makefile to force e2fsprogs to go first
+#Depend on the e2fsprogs library to force e2fsprogs to go first
 %.o: %.c $(E2FSLIB)
 	$(CC) $(YBCFLAGS) -c -o $@ $<
 
@@ -147,10 +147,7 @@ mkofboot:
 e2fsprogs:
 	git submodule update --init e2fsprogs
 
-e2fsprogs/build: e2fsprogs
-	mkdir e2fsprogs/build
-
-e2fsprogs/build/Makefile:
+e2fsprogs/build/Makefile: e2fsprogs
 	mkdir -p e2fsprogs/build;cd e2fsprogs/build;../configure --disable-mmp --disable-defrag --disable-bmap-stats
 
 $(E2FSLIB): e2fsprogs/build/Makefile
