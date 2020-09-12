@@ -117,20 +117,20 @@ endif
 # compilation
 lgcc = `$(CC) -m32 -print-libgcc-file-name`
 
-all: yaboot addnote mkofboot
+all: second/yaboot util/addnote ybin/mkofboot
 
-yaboot: $(OBJS) $(E2FSLIB)
-	$(LD) $(LFLAGS) $(OBJS) $(E2FSLIB) $(lgcc) -o second/$@
-	chmod -x second/yaboot
+second/yaboot: $(OBJS) $(E2FSLIB)
+	$(LD) $(LFLAGS) $(OBJS) $(E2FSLIB) $(lgcc) -o $@
+	chmod -x $@
 
-addnote:
+util/addnote:
 	$(CC) $(UCFLAGS) -o util/addnote util/addnote.c
 
 elfextract:
 	$(CC) $(UCFLAGS) -o util/elfextract util/elfextract.c
 
-mkofboot:
-	ln -sf ybin ybin/mkofboot
+ybin/mkofboot:
+	ln -sf ybin $@
 	@if [ $$(grep '^VERSION=' ybin/ybin | cut -f2 -d=) != ${VERSION} ] ; then	\
 		echo "ybin/ybin: warning: VERSION  mismatch"; 				\
 		false; 									\
