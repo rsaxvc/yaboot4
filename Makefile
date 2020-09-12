@@ -44,7 +44,7 @@ YBCFLAGS += -DTEXTADDR=$(TEXTADDR) -DDEBUG=$(DEBUG)
 YBCFLAGS += -DMALLOCADDR=$(MALLOCADDR) -DMALLOCSIZE=$(MALLOCSIZE)
 YBCFLAGS += -DKERNELADDR=$(KERNELADDR)
 YBCFLAGS += -Ddev_t=uint32_t
-YBCFLAGS += -Dtime_t=uint64_t
+YBCFLAGS += -Dtime_t=uint32_t
 YBCFLAGS += -fgnu89-inline -fno-builtin-malloc
 YBCFLAGS += -I ./include
 YBCFLAGS += -fno-strict-aliasing
