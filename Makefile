@@ -133,10 +133,12 @@ mkofboot:
 		false; 									\
 	fi
 
+#We need some headers built during the e2fsprogs build process.
+#Depend on the e2fsprogs Makefile to force e2fsprogs to go first
 %.o: %.c $(E2FSLIB)
 	$(CC) $(YBCFLAGS) -c -o $@ $<
 
-%.o: %.S $(E2FSLIB)
+%.o: %.S
 	$(CC) $(YBCFLAGS) -D__ASSEMBLY__  -c -o $@ $<
 
 e2fsprogs:
@@ -145,11 +147,11 @@ e2fsprogs:
 e2fsprogs/build: e2fsprogs
 	mkdir e2fsprogs/build
 
-e2fsprogs/build/Makefile: e2fsprogs/build
-	cd e2fsprogs/build;../configure --disable-mmp --disable-defrag --disable-bmap-stats
+e2fsprogs/build/Makefile:
+	mkdir -p e2fsprogs/build;cd e2fsprogs/build;../configure --disable-mmp --disable-defrag --disable-bmap-stats
 
-e2fsprogs/build/lib/libext2fs.a: e2fsprogs/build/Makefile
-	cd e2fsprogs/build;make
+$(E2FSLIB): e2fsprogs/build/Makefile
+	make -C e2fsprogs/build/
 
 dep:
 	makedepend -Iinclude *.c lib/*.c util/*.c gui/*.c
