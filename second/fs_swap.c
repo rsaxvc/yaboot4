@@ -60,8 +60,8 @@ swap_open(struct boot_file_t* file, struct partition_t* part,
      DEBUG_OPEN;
 
      if (file->device_kind != FILE_DEVICE_BLOCK || part == NULL) {
-	  DEBUG_LEAVE(FILE_ERR_BADDEV);
-	  return FILE_ERR_BADDEV;
+          DEBUG_LEAVE(FILE_ERR_BAD_FSYS);
+          return FILE_ERR_BAD_FSYS;
      }
 
      /* We assume that device is "short" and is correctly NULL terminsated */

@@ -216,7 +216,7 @@ prom_get_devtype (char *device)
      else if (!strcmp(tmp, "network"))
 	  return FILE_DEVICE_NET;
      else {
-	  prom_printf("Unkown device type <%s>\n", tmp);
+	  prom_printf("Unknown device type <%s>\n", tmp);
 	  return FILE_ERR_BADDEV;
      }
 }
